@@ -37,7 +37,7 @@ export default function About() {
         className="container mx-auto px-4 py-16"
       >
         <h1 className="text-5xl font-bold text-center mb-6">KELOMPOK II</h1>
-        <p className="text-xl text-center text-justify max-w-3xl mx-auto">
+        <p className="text-xl text-justify max-w-3xl mx-auto">
         Inisiatif kami untuk membuat informasi cuaca lebih mudah diakses oleh semua orang. Dengan website ini, kami berharap dapat membantu masyarakat dalam merencanakan aktivitas sehari-hari, serta meningkatkan kesiapsiagaan terhadap cuaca ekstrem.
         </p>
       </motion.div>

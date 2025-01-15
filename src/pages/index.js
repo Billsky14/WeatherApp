@@ -85,7 +85,7 @@ export default function Home() {
         {forecast.length > 0 && (
           <>
             <h1 className="text-2xl font-bold my-6">MINGGU INI :</h1>          
-            <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className=" mt-4 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {forecast.map((day, index) => (
                 <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 text-center">
                   <p className="text-lg font-bold text-black">{
@@ -98,7 +98,7 @@ export default function Home() {
                 }</p>
                   <p className="text-gray-700 capitalize mt-1">{day.weather[0].description}</p>
                   <p className="text-blue-500 text-3xl font-extrabold my-4">{Math.round(day.main.temp)}°C</p>
-                  <div className="flex justify-between mt-4 text-gray-600 bg-gray-50 p-3 rounded-md">
+                  <div className="flex justify-between flex-col lg:flex-row mt-4 mx-auto text-gray-600 bg-gray-50 p-3 rounded-md">
                     <div>
                       <p className="font-semibold">Kelembaban:</p>
                       <p>{day.main.humidity}%</p>
