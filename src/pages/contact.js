@@ -60,7 +60,7 @@ export default function ContactUs() {
           <div className="bg-white p-6 rounded-lg shadow-md">
             {/* Contact Info */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">informasi Kontak</h2>
+              <h2 className="text-xl font-semibold mb-4">Informasi Kontak</h2>
               <div className="space-y-2 text-gray-600">
                 <p>Email: yuzusuika23@gmail.com</p>
                 <p>Telepon: (+62) 895-3288-20988</p>
