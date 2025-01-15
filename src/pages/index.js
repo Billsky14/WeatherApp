@@ -1,114 +1,119 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { useState } from 'react';
+import axios from 'axios';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function Home() {
-  return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [location, setLocation] = useState('');
+  const [weather, setWeather] = useState(null);
+  const [forecast, setForecast] = useState([]);
+  const [error, setError] = useState(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const fetchWeather = async () => {
+    try {
+      const API_KEY = '26051bc174cc7df011fccc99145c644d';
+      const currentWeatherResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`
+      );
+      setWeather(currentWeatherResponse.data);
+
+      const forecastResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&cnt=6&appid=${API_KEY}`
+      );
+      setForecast([currentWeatherResponse.data, ...forecastResponse.data.list.slice(1)]);
+
+      setError(null);
+    } catch (err) {
+      setError('Lokasi tidak dapat ditemukan, tolong periksa kembali.');
+      setWeather(null);
+      setForecast([]);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      fetchWeather();
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow flex flex-col items-center justify-center p-6">
+        <h1 className="text-5xl font-extrabold my-16 text-center">PERKIRAAN CUACA</h1>
+        <div className="flex flex-col sm:flex-row sm:space-x-4 w-full max-w-lg">
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Masukan Lokasi Yang Diinginkan"
+            className="text-black px-4 py-3 rounded-lg border border-gray-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-400 w-full"
+          />
+          <button
+            onClick={fetchWeather}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 mt-3 sm:mt-0"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            CARI
+          </button>
+        </div>
+
+        {error && <p className="text-red-500 mt-6 text-lg font-semibold">{error}</p>}
+        {weather && (
+          <div className="mt-10 bg-white p-6 sm:py-3 rounded-lg shadow-2xl text-center max-w-md w-full">
+            <h1>HARI INI</h1>
+            <h2 className="text-3xl font-bold text-gray-800">
+              {weather.name}, {weather.sys.country}
+            </h2> 
+            <p className="text-xl text-gray-700 mt-2 capitalize">{weather.weather[0].description}</p>
+            <p className="text-5xl font-extrabold text-blue-500 mt-4">
+              {Math.round(weather.main.temp)}°C
+            </p>
+            <div className="flex justify-between mt-6 text-gray-600 text-lg">
+              <div>
+                <p className="font-semibold">Kelembaban:</p>
+                <p>{weather.main.humidity}%</p>
+              </div>
+              <div>
+                <p className="font-semibold">Angin:</p>
+                <p>{weather.wind.speed} m/s</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {forecast.length > 0 && (
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {forecast.map((day, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-xl text-center">
+                <p className="text-lg font-bold text-black">{new Date(day.dt * 1000).toLocaleDateString()}</p>
+                <p className="text-gray-700 capitalize mt-1">{day.weather[0].description}</p>
+                <p className="text-blue-500 text-3xl font-extrabold mt-3">{Math.round(day.main.temp)}°C</p>
+                <div className="flex justify-between mt-4 text-gray-600">
+                  <div>
+                    <p className="font-semibold">Kelembaban:</p>
+                    <p>{day.main.humidity}%</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Angin:</p>
+                    <p>{day.wind.speed} m/s</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div> 
+        )}
+        <div className="description-box text-center bg-blue-100 hover:bg-emerald-100 shadow-inner rounded-lg p-4 max-w-2xl w-full mt-8">
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">Informasi</h3>
+          <p className="text-gray-700">
+          "Selalu siap dengan cuaca! Dapatkan prakiraan cuaca terkini dan akurat langsung di genggaman Anda. Rencanakan aktivitas Anda dengan lebih baik dengan informasi suhu, curah hujan, kelembaban, dan banyak lagi. Unduh sekarang dan nikmati cuaca yang menyenangkan!"
+          </p>
+          <h3 className='text-xl font-semibold text-gray-800 mt-10'>Catatan :</h3>
+          <i className='text-gray-700'>"Beberapa lokasi mungkin harus dtulis dengan nama lengkap"</i>
+          <p className='text-gray-700'>Contoh : "Cipocok" (Error) "Cipocok Jaya" (Success)</p>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <Footer />
     </div>
   );
 }
