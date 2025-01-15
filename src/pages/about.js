@@ -112,7 +112,7 @@ export default function About() {
                   src="/openweather.svg"
                   alt="logo-aplikasi"
                   width={150}
-                  height={150}
+                  height={100}
                   priority
                   className="mx-auto"
                 />

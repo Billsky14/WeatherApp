@@ -11,7 +11,7 @@ export default function Home() {
 
   const fetchWeather = async () => {
     try {
-      const API_KEY = '26051bc174cc7df011fccc99145c644d';
+      const API_KEY = '26051bc174cc7df011fccc99145c644d'; //API KEY MILIK BILLSKUYYY JANGAN DISALAH GUNAKAN
       const currentWeatherResponse = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`
       );
@@ -83,25 +83,35 @@ export default function Home() {
         )}
 
         {forecast.length > 0 && (
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {forecast.map((day, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-xl text-center">
-                <p className="text-lg font-bold text-black">{new Date(day.dt * 1000).toLocaleDateString()}</p>
-                <p className="text-gray-700 capitalize mt-1">{day.weather[0].description}</p>
-                <p className="text-blue-500 text-3xl font-extrabold mt-3">{Math.round(day.main.temp)}°C</p>
-                <div className="flex justify-between mt-4 text-gray-600">
-                  <div>
-                    <p className="font-semibold">Kelembaban:</p>
-                    <p>{day.main.humidity}%</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Angin:</p>
-                    <p>{day.wind.speed} m/s</p>
+          <>
+            <h1 className="text-2xl font-bold my-6">MINGGU INI :</h1>          
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {forecast.map((day, index) => (
+                <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 text-center">
+                  <p className="text-lg font-bold text-black">{
+                  new Date((new Date().getTime() + index * 24 * 60 * 60 * 1000)).toLocaleDateString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                  })
+                }</p>
+                  <p className="text-gray-700 capitalize mt-1">{day.weather[0].description}</p>
+                  <p className="text-blue-500 text-3xl font-extrabold my-4">{Math.round(day.main.temp)}°C</p>
+                  <div className="flex justify-between mt-4 text-gray-600 bg-gray-50 p-3 rounded-md">
+                    <div>
+                      <p className="font-semibold">Kelembaban:</p>
+                      <p>{day.main.humidity}%</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold">Angin:</p>
+                      <p>{day.wind.speed} m/s</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div> 
+              ))}
+            </div>
+          </>
         )}
         <div className="description-box text-center bg-blue-100 hover:bg-emerald-100 shadow-inner rounded-lg p-4 max-w-2xl w-full mt-8">
           <h3 className="text-xl font-semibold text-gray-800 mb-3">Informasi</h3>
