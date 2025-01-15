@@ -11,7 +11,7 @@ export default function ContactUs() {
     email: '',
     message: ''
   });
-  const [status, setStatus] = useState(''); // For showing success/error messages
+  const [status, setStatus] = useState(''); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,17 +71,17 @@ export default function ContactUs() {
             {/* Status Messages */}
             {status === 'sending' && (
               <div className="mb-4 p-3 bg-blue-100 text-blue-700 rounded">
-                Sending message...
+                Mengirim pesan...
               </div>
             )}
             {status === 'success' && (
               <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">
-                Message sent successfully!
+                Pesan berhasi; dikirim!
               </div>
             )}
             {status === 'error' && (
               <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-                Failed to send message. Please try again.
+                Gagal mengirim pesan. Silahkan coba kembali.
               </div>
             )}
 
@@ -90,7 +90,7 @@ export default function ContactUs() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-gray-700 mb-2" htmlFor="name">
-                    Name
+                    Nama Lengkap :
                   </label>
                   <input
                     type="text"
@@ -105,7 +105,7 @@ export default function ContactUs() {
 
                 <div>
                   <label className="block text-gray-700 mb-2" htmlFor="email">
-                    Email
+                    Email :
                   </label>
                   <input
                     type="email"
@@ -120,7 +120,7 @@ export default function ContactUs() {
 
                 <div>
                   <label className="block text-gray-700 mb-2" htmlFor="message">
-                    Message
+                    Tulisa Pesan :
                   </label>
                   <textarea
                     id="message"

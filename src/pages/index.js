@@ -61,7 +61,7 @@ export default function Home() {
         {error && <p className="text-red-500 mt-6 text-lg font-semibold">{error}</p>}
         {weather && (
           <div className="mt-10 bg-white p-6 sm:py-3 rounded-lg shadow-2xl text-center max-w-md w-full">
-            <h1>HARI INI</h1>
+            <h1>HARI INI :</h1>
             <h2 className="text-3xl font-bold text-gray-800">
               {weather.name}, {weather.sys.country}
             </h2> 
