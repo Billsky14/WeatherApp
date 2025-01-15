@@ -120,7 +120,7 @@ export default function ContactUs() {
 
                 <div>
                   <label className="block text-gray-700 mb-2" htmlFor="message">
-                    Tulisa Pesan :
+                    Tulis Pesan :
                   </label>
                   <textarea
                     id="message"
