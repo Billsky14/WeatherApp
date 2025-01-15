@@ -39,7 +39,7 @@ export default function Navbar() {
         <ul
           className={`${
             menuOpen ? 'block' : 'hidden'
-          } md:flex space-x-6 w-full md:w-auto bg-blue-700 md:bg-transparent rounded-lg md:rounded-none mt-4 md:mt-0 p-4 md:p-0`}
+          } md:flex space-x-6 w-full md:w-auto md:bg-transparent rounded-lg md:rounded-none mt-4 md:mt-0 p-4 md:p-0`}
         >
           {navItems.map((item) => (
             <li key={item.path}>
