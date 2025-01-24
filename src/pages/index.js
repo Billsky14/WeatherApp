@@ -11,7 +11,7 @@ export default function Home() {
 
   const fetchWeather = async () => {
     try {
-      const API_KEY = '26051bc174cc7df011fccc99145c644d'; //API KEY MILIK BILLSKUYYY JANGAN DISALAH GUNAKAN
+      const API_KEY = '26051bc174cc7df011fccc99145c644d';
       const currentWeatherResponse = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`
       );
